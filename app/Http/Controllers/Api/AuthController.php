@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -22,9 +22,11 @@ class AuthController extends Controller
 
         $user = User::create($validatedData);
 
+        event(new Registered($user));
+
         return ApiResponse::success(
             $user,
-            'User registered successfully',
+            'User registered successfully. Please verify your email.',
             201
         );
     }

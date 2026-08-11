@@ -7,6 +7,9 @@ use App\Http\Controllers\Api\HabitLogController;
 use App\Http\Controllers\Api\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Helpers\ApiResponse;
+use App\Http\Controllers\Api\PasswordResetController;
+use App\Models\User;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -44,7 +47,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    // Route::post('/habits/{habitId}/logs', [HabitLogController::class, 'store']);
     Route::get('/habits/{habitId}/logs', [HabitLogController::class, 'index']);
     Route::post('/habits/{habitId}/complete-today', [HabitLogController::class, 'completeToday']);
     Route::get('/habits/{habitId}/streak', [HabitLogController::class, 'streak']);
@@ -66,3 +68,56 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::put('/profile/change-password', [ProfileController::class, 'changePassword']);
 });
+
+
+
+
+Route::get('/email/verify/{id}/{hash}', function (Request $request, string $id, string $hash) {
+
+    $user = User::findOrFail($id);
+
+    if (! hash_equals(
+        (string) $hash,
+        sha1($user->getEmailForVerification())
+    )) {
+        return ApiResponse::error(
+            'Invalid verification link',
+            403
+        );
+    }
+
+    if (! $user->hasVerifiedEmail()) {
+        $user->markEmailAsVerified();
+    }
+
+    return ApiResponse::success(
+        null,
+        'Email verified successfully',
+        200
+    );
+})->middleware('signed')->name('verification.verify');
+
+
+
+
+Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword']);
+
+Route::get('/reset-password/{token}', function (string $token) {
+    return ApiResponse::success(
+        [
+            'token' => $token,
+            'email' => request('email'),
+        ],
+        'Password reset token received successfully.',
+        200
+    );
+})->name('password.reset');
+
+
+
+
+
+
+
+
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);

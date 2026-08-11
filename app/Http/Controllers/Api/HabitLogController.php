@@ -3,12 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreHabitLogRequest;
 use App\Models\HabitLog;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Pest\Support\Str;
-use phpDocumentor\Reflection\Types\String_;
 use Carbon\Carbon;
 use App\Helpers\ApiResponse;
 
@@ -39,36 +35,6 @@ class HabitLogController extends Controller
     }
 
 
-
-    // public function store(StoreHabitLogRequest $request, string $habitId)
-    // {
-    //     /** @var \App\Models\User $user */
-    //     $user = Auth::user();
-
-    //     $habit = $user->habits()->findOrFail($habitId);
-
-    //     $validatedData = $request->validated();
-
-    //     $alreadyCompleted = HabitLog::where('habit_id', $habit->id)
-    //         ->where('completed_date', $validatedData['completed_date'])
-    //         ->exists();
-
-    //     if ($alreadyCompleted) {
-    //         return ApiResponse::error(
-    //             'This habit has already been completed on this date.',
-    //             422
-    //         );
-    //     }
-
-    //     $validatedData['habit_id'] = $habit->id;
-    //     $validatedData['user_id'] = $user->id;
-    //     $habitLog = HabitLog::create($validatedData);
-    //     return ApiResponse::success(
-    //         $habitLog,
-    //         'Habit marked as completed successfully',
-    //         201
-    //     );
-    // }
 
 
     public function completeToday(string $habitId)

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreHabitLogRequest extends FormRequest
+class ForgotPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class StoreHabitLogRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'completed_date' => 'required|date',
+            'email' => 'required|email',
         ];
     }
 }
