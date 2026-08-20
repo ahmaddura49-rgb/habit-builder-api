@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Helpers\ApiResponse;
+use App\Http\Controllers\Api\HabitTemplateController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Models\User;
 
@@ -116,8 +117,27 @@ Route::get('/reset-password/{token}', function (string $token) {
 
 
 
-
-
-
-
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
+
+
+
+
+
+
+
+
+
+
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/habit-templates', [HabitTemplateController::class, 'index']);
+
+    Route::post('/habit-templates/{id}/start', [HabitTemplateController::class, 'start']);
+
+    Route::post('/habit-templates/{id}/save', [HabitTemplateController::class, 'save']);
+
+    Route::delete('/habit-templates/{id}/save', [HabitTemplateController::class, 'unsave']);
+
+    Route::get('/saved-habit-templates', [HabitTemplateController::class, 'saved']);
+});

@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Habit;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\HabitTemplate;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -53,5 +54,17 @@ class User extends Authenticatable implements MustVerifyEmail
     public function habits()
     {
         return $this->hasMany(Habit::class);
+    }
+
+
+
+
+
+    public function savedHabitTemplates()
+    {
+        return $this->belongsToMany(
+            HabitTemplate::class,
+            'saved_habit_templates'
+        )->withTimestamps();
     }
 }
