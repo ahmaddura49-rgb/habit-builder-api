@@ -44,6 +44,13 @@ class AuthController extends Controller
             );
         }
 
+        if (! $user->hasVerifiedEmail()) {
+            return ApiResponse::error(
+                'Please verify your email before logging in.',
+                403
+            );
+        }
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return ApiResponse::success(
@@ -55,6 +62,8 @@ class AuthController extends Controller
             200
         );
     }
+
+
 
     public function logout()
     {
