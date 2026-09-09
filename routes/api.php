@@ -39,6 +39,9 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/habits', [HabitController::class, 'store']);
     Route::get('/habits', [HabitController::class, 'index']);
+
+    Route::get('/habits/summary', [HabitController::class, 'summary']);
+
     route::get('/habits/{id}', [HabitController::class, 'show']);
     Route::put('/habits/{id}', [HabitController::class, 'update']);
     Route::delete('/habits/{id}', [HabitController::class, 'destroy']);
